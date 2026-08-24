@@ -6,6 +6,7 @@
 <title>Relatório de Acompanhamento — Parceria Ancar | MyDNA</title>
 <style>
   :root{
+    color-scheme: light;
     --petroleo-950:#071c21;
     --petroleo-900:#0a2830;
     --petroleo-800:#0f3640;
@@ -13,6 +14,8 @@
     --petroleo-600:#1c5866;
     --petroleo-accent:#2fb5a3;
     --petroleo-accent-soft:#e6f7f4;
+    --gold:#a97a26;
+    --note:#7c9299;
     --ink:#0f2226;
     --ink-soft:#4b6167;
     --paper:#f5f8f8;
@@ -20,14 +23,14 @@
     --border:#dde6e6;
     --green-bg:#e5f6ea;
     --green-fg:#1c7a3e;
-    --green-dot:#2fa85a;
     --blue-bg:#e6f0fb;
     --blue-fg:#1c50a0;
-    --blue-dot:#3b7ed1;
     --shadow: 0 1px 2px rgba(10,40,48,.06), 0 8px 24px rgba(10,40,48,.08);
+    --shadow-hover: 0 4px 10px rgba(10,40,48,.10), 0 18px 34px rgba(10,40,48,.14);
   }
 
   *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
   body{
     margin:0;
     background:var(--paper);
@@ -38,25 +41,52 @@
   }
 
   a{color:inherit;}
+  a:focus-visible, .ov-card:focus-visible{
+    outline:2px solid var(--petroleo-accent);
+    outline-offset:3px;
+    border-radius:6px;
+  }
 
   .wrap{max-width:980px;margin:0 auto;padding:0 20px;}
 
-  /* HEADER */
+  svg{display:block;}
+
+  /* SKIP LINK */
+  .skip-link{
+    position:absolute;left:-999px;top:auto;
+    background:var(--petroleo-900);color:#fff;
+    padding:10px 16px;border-radius:0 0 8px 0;
+    font-size:13px;font-weight:600;z-index:100;
+  }
+  .skip-link:focus{left:0;top:0;}
+
+  /* HERO */
   header.hero{
-    background:linear-gradient(135deg,var(--petroleo-950) 0%,var(--petroleo-800) 60%,var(--petroleo-700) 100%);
+    background:linear-gradient(150deg,var(--petroleo-950) 0%,var(--petroleo-800) 55%,var(--petroleo-700) 100%);
     color:#fff;
-    padding:56px 0 44px;
+    padding:52px 0 40px;
     position:relative;
     overflow:hidden;
+  }
+  header.hero::before{
+    content:"";
+    position:absolute;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.12) 1px, transparent 1px);
+    background-size:22px 22px;
+    -webkit-mask-image:linear-gradient(180deg, rgba(0,0,0,.5), transparent 75%);
+            mask-image:linear-gradient(180deg, rgba(0,0,0,.5), transparent 75%);
+    pointer-events:none;
   }
   header.hero::after{
     content:"";
     position:absolute;
-    top:-120px;right:-120px;
-    width:360px;height:360px;
+    top:-130px;right:-110px;
+    width:340px;height:340px;
     border-radius:50%;
-    background:radial-gradient(circle at center, rgba(47,181,163,.25), transparent 70%);
+    background:radial-gradient(circle at center, rgba(47,181,163,.28), transparent 70%);
+    pointer-events:none;
   }
+  .hero-inner{position:relative;}
   .eyebrow{
     display:inline-flex;
     align-items:center;
@@ -65,10 +95,10 @@
     letter-spacing:.06em;
     text-transform:uppercase;
     color:var(--petroleo-accent);
-    font-weight:600;
+    font-weight:700;
     margin-bottom:14px;
   }
-  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--petroleo-accent);}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--petroleo-accent);flex:none;}
   h1{
     font-size:clamp(26px,4vw,38px);
     margin:0 0 10px;
@@ -79,22 +109,68 @@
   .hero-meta{
     display:flex;
     flex-wrap:wrap;
-    gap:10px 22px;
-    margin-top:18px;
+    gap:8px 22px;
+    margin-top:16px;
     font-size:14.5px;
     color:rgba(255,255,255,.78);
   }
   .hero-meta strong{color:#fff;font-weight:600;}
   .hero-desc{
-    margin-top:18px;
-    max-width:680px;
+    margin-top:16px;
+    max-width:660px;
     font-size:15px;
+    line-height:1.6;
     color:rgba(255,255,255,.82);
   }
 
+  .hero-stats{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:28px;
+  }
+  .stat-tile{
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:12px;
+    padding:12px 20px;
+    min-width:118px;
+  }
+  .stat-num{font-size:24px;font-weight:800;line-height:1.1;color:#fff;letter-spacing:-0.02em;}
+  .stat-label{font-size:11.5px;color:rgba(255,255,255,.7);margin-top:5px;text-transform:uppercase;letter-spacing:.05em;font-weight:600;}
+
+  /* QUICK NAV */
+  .quicknav{
+    position:sticky;top:0;z-index:40;
+    background:rgba(245,248,248,.9);
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .quicknav-inner{
+    max-width:980px;margin:0 auto;
+    display:flex;gap:4px;
+    overflow-x:auto;
+    padding:9px 20px;
+    scrollbar-width:thin;
+  }
+  .quicknav a{
+    flex:none;
+    padding:6px 13px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--petroleo-700);
+    text-decoration:none;
+    white-space:nowrap;
+    transition:background-color .18s ease, color .18s ease;
+  }
+  .quicknav a:hover{background:var(--petroleo-accent-soft);color:var(--petroleo-900);}
+
   main{padding:40px 0 80px;}
 
-  section{margin-bottom:56px;}
+  section{margin-bottom:56px;scroll-margin-top:64px;}
+  article.emp-card{scroll-margin-top:64px;}
 
   .section-head{margin-bottom:22px;}
   .section-title{
@@ -122,6 +198,15 @@
     border-radius:14px;
     padding:20px;
     box-shadow:var(--shadow);
+    display:block;
+    text-decoration:none;
+    cursor:pointer;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .ov-card:hover{
+    transform:translateY(-3px);
+    box-shadow:var(--shadow-hover);
+    border-color:var(--petroleo-accent);
   }
   .ov-card .ov-name{
     font-size:16px;
@@ -137,6 +222,7 @@
   .ov-row{
     display:flex;
     justify-content:space-between;
+    align-items:center;
     gap:10px;
     font-size:13.5px;
     padding:8px 0;
@@ -146,22 +232,31 @@
   .ov-row .k{color:var(--ink-soft);}
   .ov-row .v{color:var(--ink);font-weight:600;text-align:right;}
 
+  .ov-more{
+    display:flex;align-items:center;gap:5px;
+    margin-top:14px;padding-top:12px;
+    border-top:1px solid var(--border);
+    font-size:12.5px;font-weight:700;
+    color:var(--petroleo-accent);
+  }
+  .ov-more svg{width:13px;height:13px;transition:transform .18s ease;}
+  .ov-card:hover .ov-more svg{transform:translateX(3px);}
+
+  /* BADGES */
   .badge{
     display:inline-flex;
     align-items:center;
     gap:6px;
-    padding:5px 12px;
+    padding:5px 12px 5px 9px;
     border-radius:999px;
     font-size:12.5px;
     font-weight:700;
     letter-spacing:.01em;
     white-space:nowrap;
   }
-  .badge::before{content:"";width:7px;height:7px;border-radius:50%;}
+  .badge svg{width:12px;height:12px;flex:none;}
   .badge.andamento{background:var(--green-bg);color:var(--green-fg);}
-  .badge.andamento::before{background:var(--green-dot);}
   .badge.concluido{background:var(--blue-bg);color:var(--blue-fg);}
-  .badge.concluido::before{background:var(--blue-dot);}
 
   /* SYNTHESIS */
   .synth-card{
@@ -173,7 +268,7 @@
   }
   .synth-card h3{
     margin:0 0 16px;
-    font-size:16px;
+    font-size:13px;
     color:var(--petroleo-accent);
     text-transform:uppercase;
     letter-spacing:.06em;
@@ -230,10 +325,11 @@
     margin:14px 0 26px;
     padding-bottom:22px;
     border-bottom:1px solid var(--border);
+    max-width:68ch;
   }
 
   .timeline-title{
-    font-size:12.5px;
+    font-size:12px;
     text-transform:uppercase;
     letter-spacing:.06em;
     font-weight:700;
@@ -241,38 +337,32 @@
     margin:0 0 18px;
   }
 
-  .timeline{
-    position:relative;
-    margin:0 0 26px;
-    padding-left:26px;
-  }
-  .timeline::before{
-    content:"";
-    position:absolute;
-    left:5px;top:4px;bottom:4px;
-    width:2px;
-    background:var(--border);
-  }
-  .t-item{
-    position:relative;
-    padding-bottom:20px;
-  }
-  .t-item:last-child{padding-bottom:0;}
-  .t-item::before{
-    content:"";
-    position:absolute;
-    left:-26px;top:3px;
-    width:11px;height:11px;
+  /* TIMELINE — flex rail layout */
+  .timeline{margin:0 0 26px;}
+  .t-item{display:flex;gap:14px;}
+  .t-rail{display:flex;flex-direction:column;align-items:center;}
+  .t-icon{
+    width:28px;height:28px;flex:none;
     border-radius:50%;
-    background:var(--petroleo-accent);
-    border:2px solid #fff;
-    box-shadow:0 0 0 2px var(--petroleo-accent);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;
+    box-shadow:0 0 0 4px var(--card);
   }
+  .t-icon svg{width:14px;height:14px;}
+  .t-icon--kickoff{background:var(--petroleo-700);}
+  .t-icon--session{background:var(--petroleo-600);}
+  .t-icon--delivery{background:var(--petroleo-accent);}
+  .t-icon--outcome{background:var(--gold);}
+  .t-icon--note{background:var(--note);}
+  .t-line{width:2px;flex:1;background:var(--border);margin:4px 0;min-height:8px;}
+  .t-item:last-child .t-line{display:none;}
+  .t-body{padding-bottom:22px;max-width:66ch;}
+  .t-item:last-child .t-body{padding-bottom:0;}
   .t-date{
     font-size:12.5px;
     font-weight:700;
     color:var(--petroleo-700);
-    margin-bottom:3px;
+    margin:3px 0 3px;
   }
   .t-desc{
     font-size:14px;
@@ -285,9 +375,10 @@
     border-radius:12px;
     padding:18px 20px;
   }
+  .next-steps + .next-steps{margin-top:14px;}
   .next-steps h4{
     margin:0 0 10px;
-    font-size:12.5px;
+    font-size:12px;
     text-transform:uppercase;
     letter-spacing:.06em;
     font-weight:700;
@@ -314,71 +405,125 @@
   }
 
   @media (max-width:600px){
-    header.hero{padding:40px 0 32px;}
+    header.hero{padding:36px 0 28px;}
     .emp-card{padding:22px 18px 24px;}
     .synth-card{padding:22px 18px;}
     .ov-row .v{text-align:right;max-width:60%;}
+    .stat-tile{padding:10px 16px;min-width:100px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition-duration:.001ms !important; animation-duration:.001ms !important;}
+  }
+
+  @media print{
+    body{background:#fff;}
+    .skip-link,.quicknav,.hero-stats,.ov-more{display:none !important;}
+    header.hero{background:#fff !important;color:var(--ink) !important;padding:16px 0;}
+    header.hero::before,header.hero::after{display:none;}
+    .eyebrow{color:var(--petroleo-700);}
+    .hero-desc,.hero-meta{color:var(--ink-soft) !important;}
+    .emp-card,.ov-card,.synth-card{box-shadow:none;border:1px solid var(--border);break-inside:avoid;}
+    .synth-card{background:#fff;color:var(--ink);}
+    .synth-card h3{color:var(--petroleo-700);}
+    .synth-list li{color:var(--ink);}
+    section{margin-bottom:24px;}
   }
 </style>
 </head>
 <body>
 
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+<!-- Sprite de ícones (uso interno via <use>) -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="icon-flag" viewBox="0 0 24 24"><path d="M5 3v18M5 4h11l-2 4 2 4H5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12.5l2.5 2.5L16 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-trend" viewBox="0 0 24 24"><path d="M4 16l6-6 4 4 6-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 6h4v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="8.3" r="1" fill="currentColor"/><line x1="12" y1="11" x2="12" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="21 3 21 9 15 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polyline points="12 5 19 12 12 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
 <header class="hero">
-  <div class="wrap">
+  <div class="wrap hero-inner">
     <span class="eyebrow"><span class="dot"></span>MyDNA · Programa de Outplacement</span>
     <h1>Relatório de Acompanhamento — Parceria Ancar</h1>
     <p class="hero-desc">Histórico consolidado dos colaboradores da Ancar acompanhados pelo programa de Outplacement da MyDNA, com as principais etapas percorridas, sessões realizadas com a consultoria parceira Badger Consulting (Ricardo Rocha) e o status atual de cada processo.</p>
     <div class="hero-meta">
       <span>Reunião de status · <strong>25 de agosto de 2026</strong></span>
-      <span><strong>5</strong> colaboradores acompanhados</span>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-tile"><div class="stat-num">5</div><div class="stat-label">Colaboradores</div></div>
+      <div class="stat-tile"><div class="stat-num">3</div><div class="stat-label">Em andamento</div></div>
+      <div class="stat-tile"><div class="stat-num">2</div><div class="stat-label">Concluídos</div></div>
     </div>
   </div>
 </header>
 
-<main class="wrap">
+<nav class="quicknav" aria-label="Navegação rápida do relatório">
+  <div class="quicknav-inner">
+    <a href="#visao-geral">Visão Geral</a>
+    <a href="#luciane">Luciane</a>
+    <a href="#luidi">Luidi</a>
+    <a href="#carol">Carol</a>
+    <a href="#gustavo">Gustavo</a>
+    <a href="#patricia">Patricia</a>
+    <a href="#sintese">Síntese</a>
+  </div>
+</nav>
+
+<main class="wrap" id="conteudo">
 
   <section id="visao-geral">
     <div class="section-head">
       <h2 class="section-title">Visão Geral</h2>
-      <p class="section-sub">Status consolidado de todos os colaboradores acompanhados pelo programa.</p>
+      <p class="section-sub">Status consolidado de todos os colaboradores acompanhados pelo programa. Clique em um card para ir direto ao caso.</p>
     </div>
 
     <div class="overview-grid">
 
-      <div class="ov-card">
+      <a href="#luciane" class="ov-card">
         <p class="ov-name">Luciane Treigher</p>
         <p class="ov-role">Executiva de Marketing — Shopping Nova Iguaçu</p>
-        <div class="ov-row"><span class="k">Status</span><span class="v"><span class="badge andamento">Em andamento</span></span></div>
+        <div class="ov-row"><span class="k">Status</span><span class="v"><span class="badge andamento"><svg aria-hidden="true"><use href="#icon-refresh"/></svg>Em andamento</span></span></div>
         <div class="ov-row"><span class="k">Início no programa</span><span class="v">12/mai/2026</span></div>
-      </div>
+        <div class="ov-more">Ver linha do tempo <svg aria-hidden="true"><use href="#icon-arrow"/></svg></div>
+      </a>
 
-      <div class="ov-card">
+      <a href="#luidi" class="ov-card">
         <p class="ov-name">Luidi Galvani</p>
         <p class="ov-role">Gerente Comercial — Shoppings Nova América / Metrô Itaquera</p>
-        <div class="ov-row"><span class="k">Status</span><span class="v"><span class="badge andamento">Em andamento</span></span></div>
+        <div class="ov-row"><span class="k">Status</span><span class="v"><span class="badge andamento"><svg aria-hidden="true"><use href="#icon-refresh"/></svg>Em andamento</span></span></div>
         <div class="ov-row"><span class="k">Início no programa</span><span class="v">08/jun/2026</span></div>
-      </div>
+        <div class="ov-more">Ver linha do tempo <svg aria-hidden="true"><use href="#icon-arrow"/></svg></div>
+      </a>
 
-      <div class="ov-card">
+      <a href="#carol" class="ov-card">
         <p class="ov-name">Ana Carolina Ribeiro (Carol)</p>
         <p class="ov-role">Gerente de Produtos Digitais</p>
-        <div class="ov-row"><span class="k">Status</span><span class="v"><span class="badge andamento">Em andamento</span></span></div>
+        <div class="ov-row"><span class="k">Status</span><span class="v"><span class="badge andamento"><svg aria-hidden="true"><use href="#icon-refresh"/></svg>Em andamento</span></span></div>
         <div class="ov-row"><span class="k">Início no programa</span><span class="v">19/nov/2025</span></div>
-      </div>
+        <div class="ov-more">Ver linha do tempo <svg aria-hidden="true"><use href="#icon-arrow"/></svg></div>
+      </a>
 
-      <div class="ov-card">
+      <a href="#gustavo" class="ov-card">
         <p class="ov-name">Gustavo H. Figueiredo</p>
         <p class="ov-role">Gerente de Operações</p>
-        <div class="ov-row"><span class="k">Status</span><span class="v"><span class="badge concluido">Concluído</span></span></div>
+        <div class="ov-row"><span class="k">Status</span><span class="v"><span class="badge concluido"><svg aria-hidden="true"><use href="#icon-check"/></svg>Concluído</span></span></div>
         <div class="ov-row"><span class="k">Início no programa</span><span class="v">10/abr/2026</span></div>
-      </div>
+        <div class="ov-more">Ver linha do tempo <svg aria-hidden="true"><use href="#icon-arrow"/></svg></div>
+      </a>
 
-      <div class="ov-card">
+      <a href="#patricia" class="ov-card">
         <p class="ov-name">Patricia Montoia</p>
         <p class="ov-role">Cargos de liderança comercial/vendas — Porto Velho</p>
-        <div class="ov-row"><span class="k">Status</span><span class="v"><span class="badge concluido">Concluído</span></span></div>
+        <div class="ov-row"><span class="k">Status</span><span class="v"><span class="badge concluido"><svg aria-hidden="true"><use href="#icon-check"/></svg>Concluído</span></span></div>
         <div class="ov-row"><span class="k">Início no programa</span><span class="v">21/ago/2025</span></div>
-      </div>
+        <div class="ov-more">Ver linha do tempo <svg aria-hidden="true"><use href="#icon-arrow"/></svg></div>
+      </a>
 
     </div>
   </section>
@@ -390,26 +535,50 @@
     </div>
 
     <!-- 1. Luciane Treigher -->
-    <article class="emp-card">
+    <article class="emp-card" id="luciane">
       <div class="emp-head">
         <div>
           <h3 class="emp-name">1. Luciane Treigher</h3>
           <p class="emp-role">Executiva de Marketing — Shopping Nova Iguaçu</p>
         </div>
-        <span class="badge andamento">Em andamento — processo seletivo em fase final</span>
+        <span class="badge andamento"><svg aria-hidden="true"><use href="#icon-refresh"/></svg>Em andamento — processo seletivo em fase final</span>
       </div>
       <p class="emp-intro">Executiva da área de Marketing de Vendas, vinculada ao Shopping Nova Iguaçu. Quase 4 anos de casa. Outplacement faz parte do acordo de saída.</p>
 
       <p class="timeline-title">Linha do Tempo</p>
       <div class="timeline">
-        <div class="t-item"><div class="t-date">12/mai/2026</div><div class="t-desc">Início do acompanhamento, com contato conduzido por Raphael.</div></div>
-        <div class="t-item"><div class="t-date">18/mai/2026</div><div class="t-desc">Sessão de diagnóstico inicial, mapeamento de trajetória e definição do perfil de vaga buscado — posição corporativa próxima de casa.</div></div>
-        <div class="t-item"><div class="t-date">18–26/mai/2026</div><div class="t-desc">Setup de acesso à plataforma, coleta de LinkedIn e currículo.</div></div>
-        <div class="t-item"><div class="t-date">26/mai/2026</div><div class="t-desc">Entrega da Auditoria de LinkedIn e de uma versão reestruturada e otimizada do currículo.</div></div>
-        <div class="t-item"><div class="t-date">27/mai/2026</div><div class="t-desc">Sessão de revisão de LinkedIn e currículo com ajustes finais de formatação.</div></div>
-        <div class="t-item"><div class="t-date">16/jun/2026</div><div class="t-desc">Sessão 1 com Ricardo Rocha (Badger Consulting): panorama do mercado de recrutamento executivo, estratégia de relacionamento com headhunters, ampliação de posicionamento de mercado e fortalecimento do LinkedIn.</div></div>
-        <div class="t-item"><div class="t-date">09/jul/2026</div><div class="t-desc">Sessão 2 com Ricardo Rocha: role play de entrevista com ótima avaliação de comunicação e rapport. Destaque: processo seletivo já em fase final (etapas de RH, Diretoria e CEO) em empresa nacional do varejo.</div></div>
-        <div class="t-item"><div class="t-date">24/jul/2026</div><div class="t-desc">Continuidade do acompanhamento, com apoio direto de Murilo Arruda no relacionamento com a executiva.</div></div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--kickoff"><svg aria-hidden="true"><use href="#icon-flag"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">12/mai/2026</div><div class="t-desc">Início do acompanhamento, com contato conduzido por Raphael.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--session"><svg aria-hidden="true"><use href="#icon-chat"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">18/mai/2026</div><div class="t-desc">Sessão de diagnóstico inicial, mapeamento de trajetória e definição do perfil de vaga buscado — posição corporativa próxima de casa.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--note"><svg aria-hidden="true"><use href="#icon-info"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">18–26/mai/2026</div><div class="t-desc">Setup de acesso à plataforma, coleta de LinkedIn e currículo.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--delivery"><svg aria-hidden="true"><use href="#icon-check"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">26/mai/2026</div><div class="t-desc">Entrega da Auditoria de LinkedIn e de uma versão reestruturada e otimizada do currículo.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--session"><svg aria-hidden="true"><use href="#icon-chat"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">27/mai/2026</div><div class="t-desc">Sessão de revisão de LinkedIn e currículo com ajustes finais de formatação.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--session"><svg aria-hidden="true"><use href="#icon-chat"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">16/jun/2026</div><div class="t-desc">Sessão 1 com Ricardo Rocha (Badger Consulting): panorama do mercado de recrutamento executivo, estratégia de relacionamento com headhunters, ampliação de posicionamento de mercado e fortalecimento do LinkedIn.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--outcome"><svg aria-hidden="true"><use href="#icon-trend"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">09/jul/2026</div><div class="t-desc">Sessão 2 com Ricardo Rocha: role play de entrevista com ótima avaliação de comunicação e rapport. Destaque: processo seletivo já em fase final (etapas de RH, Diretoria e CEO) em empresa nacional do varejo.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--note"><svg aria-hidden="true"><use href="#icon-info"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">24/jul/2026</div><div class="t-desc">Continuidade do acompanhamento, com apoio direto de Murilo Arruda no relacionamento com a executiva.</div></div>
+        </div>
       </div>
 
       <div class="next-steps">
@@ -423,23 +592,38 @@
     </article>
 
     <!-- 2. Luidi Galvani -->
-    <article class="emp-card">
+    <article class="emp-card" id="luidi">
       <div class="emp-head">
         <div>
           <h3 class="emp-name">2. Luidi Galvani</h3>
           <p class="emp-role">Gerente Comercial — Shoppings Metrô Itaquera / Nova América</p>
         </div>
-        <span class="badge andamento">Em andamento — currículo e LinkedIn reposicionados</span>
+        <span class="badge andamento"><svg aria-hidden="true"><use href="#icon-refresh"/></svg>Em andamento — currículo e LinkedIn reposicionados</span>
       </div>
       <p class="emp-intro">Gerente Comercial com ~7 anos de casa, à frente das operações comerciais dos Shoppings Metrô Itaquera e Nova América (~400 operações, fluxo de ~2 milhões de pessoas). Avaliações de desempenho consistentemente altas ao longo de toda a trajetória.</p>
 
       <p class="timeline-title">Linha do Tempo</p>
       <div class="timeline">
-        <div class="t-item"><div class="t-date">08/jun/2026</div><div class="t-desc">Início do acompanhamento e cadastro na plataforma no mesmo dia.</div></div>
-        <div class="t-item"><div class="t-date">12/jun/2026</div><div class="t-desc">Sessão de diagnóstico: trajetória consolidada (Ancar, Renner, Sephora, Avon), forte perfil de desenvolvimento de pessoas — destaque para 3 promoções simultâneas de equipe em 2025. Objetivo de carreira: superintendência, gerência geral ou diretoria comercial/expansão.</div></div>
-        <div class="t-item"><div class="t-date">25/jun/2026</div><div class="t-desc">Sessão 1 com Ricardo Rocha: construção de narrativa de carreira orientada a resultados, panorama do mercado comercial (referência Gartner 2026) e estratégia de headhunters/networking.</div></div>
-        <div class="t-item"><div class="t-date">08/jul/2026</div><div class="t-desc">Sessão 2 com Ricardo Rocha: revisão estratégica aprofundada do currículo (adequação a ATS) e role play de entrevista, com boa evolução ao longo da simulação.</div></div>
-        <div class="t-item"><div class="t-date">16/jul–04/ago/2026</div><div class="t-desc">Luidi avalia as sessões com Ricardo Rocha como produtivas e enriquecedoras; concentrou esforços recentes no reposicionamento do LinkedIn. Nova sessão de acompanhamento sendo agendada.</div></div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--kickoff"><svg aria-hidden="true"><use href="#icon-flag"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">08/jun/2026</div><div class="t-desc">Início do acompanhamento e cadastro na plataforma no mesmo dia.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--session"><svg aria-hidden="true"><use href="#icon-chat"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">12/jun/2026</div><div class="t-desc">Sessão de diagnóstico: trajetória consolidada (Ancar, Renner, Sephora, Avon), forte perfil de desenvolvimento de pessoas — destaque para 3 promoções simultâneas de equipe em 2025. Objetivo de carreira: superintendência, gerência geral ou diretoria comercial/expansão.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--session"><svg aria-hidden="true"><use href="#icon-chat"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">25/jun/2026</div><div class="t-desc">Sessão 1 com Ricardo Rocha: construção de narrativa de carreira orientada a resultados, panorama do mercado comercial (referência Gartner 2026) e estratégia de headhunters/networking.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--session"><svg aria-hidden="true"><use href="#icon-chat"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">08/jul/2026</div><div class="t-desc">Sessão 2 com Ricardo Rocha: revisão estratégica aprofundada do currículo (adequação a ATS) e role play de entrevista, com boa evolução ao longo da simulação.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--note"><svg aria-hidden="true"><use href="#icon-info"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">16/jul–04/ago/2026</div><div class="t-desc">Luidi avalia as sessões com Ricardo Rocha como produtivas e enriquecedoras; concentrou esforços recentes no reposicionamento do LinkedIn. Nova sessão de acompanhamento sendo agendada.</div></div>
+        </div>
       </div>
 
       <div class="next-steps">
@@ -453,23 +637,38 @@
     </article>
 
     <!-- 3. Ana Carolina Ribeiro -->
-    <article class="emp-card">
+    <article class="emp-card" id="carol">
       <div class="emp-head">
         <div>
           <h3 class="emp-name">3. Ana Carolina Ribeiro (Carol)</h3>
           <p class="emp-role">Gerente de Produtos Digitais</p>
         </div>
-        <span class="badge andamento">Em andamento — 1ª fase da trilha concluída</span>
+        <span class="badge andamento"><svg aria-hidden="true"><use href="#icon-refresh"/></svg>Em andamento — 1ª fase da trilha concluída</span>
       </div>
       <p class="emp-intro">Gerente de Produtos Digitais, com trajetória construída desde estagiária até a posição de gestão na Ancar.</p>
 
       <p class="timeline-title">Linha do Tempo</p>
       <div class="timeline">
-        <div class="t-item"><div class="t-date">19/nov/2025</div><div class="t-desc">Início do acompanhamento e apresentação do programa.</div></div>
-        <div class="t-item"><div class="t-date">24/nov/2025</div><div class="t-desc">Sessão de diagnóstico: trajetória profissional detalhada (Lojas Americanas, BR Malls, Ancar) e alinhamento de objetivos de recolocação.</div></div>
-        <div class="t-item"><div class="t-date">nov–dez/2025</div><div class="t-desc">Progressão na trilha de aprendizagem da plataforma, com apoio pontual em dúvidas de conteúdo.</div></div>
-        <div class="t-item"><div class="t-date">15/dez/2025</div><div class="t-desc">Conclusão da 1ª fase da trilha do programa.</div></div>
-        <div class="t-item"><div class="t-date">28/jan–25/fev/2026</div><div class="t-desc">Carol sinaliza interesse em avançar para a etapa de mentoria de currículo e preparação para entrevistas.</div></div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--kickoff"><svg aria-hidden="true"><use href="#icon-flag"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">19/nov/2025</div><div class="t-desc">Início do acompanhamento e apresentação do programa.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--session"><svg aria-hidden="true"><use href="#icon-chat"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">24/nov/2025</div><div class="t-desc">Sessão de diagnóstico: trajetória profissional detalhada (Lojas Americanas, BR Malls, Ancar) e alinhamento de objetivos de recolocação.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--note"><svg aria-hidden="true"><use href="#icon-info"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">nov–dez/2025</div><div class="t-desc">Progressão na trilha de aprendizagem da plataforma, com apoio pontual em dúvidas de conteúdo.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--delivery"><svg aria-hidden="true"><use href="#icon-check"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">15/dez/2025</div><div class="t-desc">Conclusão da 1ª fase da trilha do programa.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--note"><svg aria-hidden="true"><use href="#icon-info"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">28/jan–25/fev/2026</div><div class="t-desc">Carol sinaliza interesse em avançar para a etapa de mentoria de currículo e preparação para entrevistas.</div></div>
+        </div>
       </div>
 
       <div class="next-steps">
@@ -482,20 +681,26 @@
     </article>
 
     <!-- 4. Gustavo Henrique Figueiredo -->
-    <article class="emp-card">
+    <article class="emp-card" id="gustavo">
       <div class="emp-head">
         <div>
           <h3 class="emp-name">4. Gustavo Henrique Figueiredo</h3>
           <p class="emp-role">Gerente de Operações</p>
         </div>
-        <span class="badge concluido">Concluído — recolocação rápida</span>
+        <span class="badge concluido"><svg aria-hidden="true"><use href="#icon-check"/></svg>Concluído — recolocação rápida</span>
       </div>
       <p class="emp-intro">Gerente de Operações com experiência em gestão operacional no segmento de shopping centers.</p>
 
       <p class="timeline-title">Linha do Tempo</p>
       <div class="timeline">
-        <div class="t-item"><div class="t-date">10/abr/2026</div><div class="t-desc">Início do acompanhamento e apresentação da plataforma.</div></div>
-        <div class="t-item"><div class="t-date">22/jun/2026</div><div class="t-desc">Gustavo informa recolocação já concretizada, ocorrida poucas semanas após o início do programa.</div></div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--kickoff"><svg aria-hidden="true"><use href="#icon-flag"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">10/abr/2026</div><div class="t-desc">Início do acompanhamento e apresentação da plataforma.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--outcome"><svg aria-hidden="true"><use href="#icon-trend"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">22/jun/2026</div><div class="t-desc">Gustavo informa recolocação já concretizada, ocorrida poucas semanas após o início do programa.</div></div>
+        </div>
       </div>
 
       <div class="next-steps">
@@ -508,23 +713,38 @@
     </article>
 
     <!-- 5. Patricia Montoia -->
-    <article class="emp-card">
+    <article class="emp-card" id="patricia">
       <div class="emp-head">
         <div>
           <h3 class="emp-name">5. Patricia Montoia</h3>
           <p class="emp-role">Cargos de liderança comercial/vendas — Porto Velho</p>
         </div>
-        <span class="badge concluido">Concluído — recolocação rápida</span>
+        <span class="badge concluido"><svg aria-hidden="true"><use href="#icon-check"/></svg>Concluído — recolocação rápida</span>
       </div>
       <p class="emp-intro">Perfil voltado a cargos de liderança comercial/vendas/marketing, com foco em Porto Velho e abertura para posições remotas em multinacionais.</p>
 
       <p class="timeline-title">Linha do Tempo</p>
       <div class="timeline">
-        <div class="t-item"><div class="t-date">15/ago/2025</div><div class="t-desc">Início do acompanhamento e coleta de dados para cadastro na plataforma.</div></div>
-        <div class="t-item"><div class="t-date">18/ago/2025</div><div class="t-desc">Sessão de diagnóstico: trajetória no mercado de luxo, locadora de veículos e RH; alinhamento de expectativa salarial e interesse em multinacionais e vagas remotas.</div></div>
-        <div class="t-item"><div class="t-date">21/ago/2025</div><div class="t-desc">Acesso à plataforma liberado e primeira sessão de mentoria proposta, com foco em "Proposta de Valor".</div></div>
-        <div class="t-item"><div class="t-date">04/set/2025</div><div class="t-desc">Patricia em ritmo consistente na trilha da plataforma, já na 4ª etapa.</div></div>
-        <div class="t-item"><div class="t-date">12/set/2025</div><div class="t-desc">Patricia comunica recolocação bem-sucedida por iniciativa própria.</div></div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--kickoff"><svg aria-hidden="true"><use href="#icon-flag"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">15/ago/2025</div><div class="t-desc">Início do acompanhamento e coleta de dados para cadastro na plataforma.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--session"><svg aria-hidden="true"><use href="#icon-chat"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">18/ago/2025</div><div class="t-desc">Sessão de diagnóstico: trajetória no mercado de luxo, locadora de veículos e RH; alinhamento de expectativa salarial e interesse em multinacionais e vagas remotas.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--note"><svg aria-hidden="true"><use href="#icon-info"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">21/ago/2025</div><div class="t-desc">Acesso à plataforma liberado e primeira sessão de mentoria proposta, com foco em "Proposta de Valor".</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--note"><svg aria-hidden="true"><use href="#icon-info"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">04/set/2025</div><div class="t-desc">Patricia em ritmo consistente na trilha da plataforma, já na 4ª etapa.</div></div>
+        </div>
+        <div class="t-item">
+          <div class="t-rail"><span class="t-icon t-icon--outcome"><svg aria-hidden="true"><use href="#icon-trend"/></svg></span><span class="t-line"></span></div>
+          <div class="t-body"><div class="t-date">12/set/2025</div><div class="t-desc">Patricia comunica recolocação bem-sucedida por iniciativa própria.</div></div>
+        </div>
       </div>
 
       <div class="next-steps">
@@ -537,7 +757,6 @@
           <li>Autoconhecimento</li>
         </ul>
       </div>
-      <div style="height:14px"></div>
       <div class="next-steps">
         <h4>Status e Próximos Passos</h4>
         <ul>
